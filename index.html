@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Una pregunta para Jade ❤️</title>
+<title>Querida Jade ❤️</title>
 
 <style>
 
@@ -22,10 +22,11 @@ body{
     align-items:center;
     background:linear-gradient(
         135deg,
-        #ffb6c1,
-        #ffc0cb,
-        #ffd1dc
+        #4A90E2,
+        #5DADE2,
+        #85C1E9
     );
+    transition:1s;
 }
 
 .container{
@@ -58,7 +59,7 @@ button{
 
 #yes{
     background:white;
-    color:#ff4d88;
+    color:#4A90E2;
     font-weight:bold;
 }
 
@@ -67,9 +68,15 @@ button{
 }
 
 #no{
-    position:absolute;
     background:#ff4d88;
     color:white;
+}
+
+.buttons{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:15px;
 }
 
 #message{
@@ -141,13 +148,17 @@ button{
 
     <br>
 
-    <button id="yes">
-        Sí ❤️
-    </button>
+    <div class="buttons">
 
-    <button id="no">
-        No 😢
-    </button>
+        <button id="yes">
+            Sí ❤️
+        </button>
+
+        <button id="no">
+            No 😢
+        </button>
+
+    </div>
 
     <div id="message"></div>
 
@@ -155,14 +166,14 @@ button{
 
 <div id="finalScreen">
 
-    <h1>❤️ ¡Perfecto! ❤️</h1>
+    <h1>Sabía que dirías que sí ❤️</h1>
 
     <h2>
-        Jade, nuestra cita está confirmada ✨
+        Gracias por aceptar, te prometo que será increíble ✨
     </h2>
 
     <h2>
-        📅 Sábado 20 de junio de 2026
+        📅 Sábado 20
     </h2>
 
     <h2>
@@ -183,6 +194,14 @@ const noBtn = document.getElementById("no");
 const yesBtn = document.getElementById("yes");
 const message = document.getElementById("message");
 
+window.onload = () => {
+
+    noBtn.style.position = "relative";
+    noBtn.style.left = "0";
+    noBtn.style.top = "0";
+
+};
+
 let escala = 1;
 
 const frases = [
@@ -198,6 +217,8 @@ const frases = [
 let intento = 0;
 
 function moverBoton(){
+
+    noBtn.style.position = "absolute";
 
     const ancho = window.innerWidth - 150;
     const alto = window.innerHeight - 80;
@@ -227,9 +248,13 @@ yesBtn.addEventListener("click", () => {
     document.getElementById("main").style.display = "none";
     document.getElementById("finalScreen").style.display = "block";
 
-    iniciarCuentaRegresiva();
+    document.body.style.background =
+    "linear-gradient(135deg,#ffb6c1,#ffc0cb,#ffd1dc)";
 
-    for(let i=0; i<200; i++){
+    iniciarCuentaRegresiva();
+    iniciarCorazones();
+
+    for(let i=0; i<150; i++){
 
         setTimeout(() => {
 
@@ -237,7 +262,9 @@ yesBtn.addEventListener("click", () => {
                 document.createElement("div");
 
             heart.className = "heart";
-            heart.innerHTML = "❤️";
+
+            heart.innerHTML =
+                Math.random() > 0.5 ? "❤️" : "💙";
 
             heart.style.left =
                 Math.random() * 100 + "vw";
@@ -254,8 +281,10 @@ yesBtn.addEventListener("click", () => {
                 heart.remove();
             },7000);
 
-        },i*40);
+        },i*30);
+
     }
+
 });
 
 function iniciarCuentaRegresiva(){
@@ -317,29 +346,34 @@ function iniciarCuentaRegresiva(){
     },1000);
 }
 
-setInterval(() => {
+function iniciarCorazones(){
 
-    const heart =
-        document.createElement("div");
+    setInterval(() => {
 
-    heart.className = "heart";
-    heart.innerHTML = "💖";
+        const heart =
+            document.createElement("div");
 
-    heart.style.left =
-        Math.random()*100 + "vw";
+        heart.className = "heart";
 
-    heart.style.top = "100vh";
+        heart.innerHTML =
+            Math.random() > 0.5 ? "❤️" : "💙";
 
-    heart.style.animationDuration =
-        (Math.random()*4 + 5) + "s";
+        heart.style.left =
+            Math.random()*100 + "vw";
 
-    document.body.appendChild(heart);
+        heart.style.top = "100vh";
 
-    setTimeout(() => {
-        heart.remove();
-    },9000);
+        heart.style.animationDuration =
+            (Math.random()*4 + 4) + "s";
 
-},500);
+        document.body.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        },8000);
+
+    },250);
+}
 
 </script>
 
