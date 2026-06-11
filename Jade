@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Una pregunta para Jade ❤️</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    height:100vh;
+    overflow:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(
+        135deg,
+        #ffb6c1,
+        #ffc0cb,
+        #ffd1dc
+    );
+}
+
+.container{
+    text-align:center;
+    padding:30px;
+    z-index:2;
+}
+
+h1{
+    color:white;
+    font-size:3rem;
+    margin-bottom:20px;
+    text-shadow:2px 2px 10px rgba(0,0,0,.15);
+}
+
+p{
+    color:white;
+    font-size:1.2rem;
+    margin-bottom:30px;
+}
+
+button{
+    border:none;
+    border-radius:15px;
+    padding:15px 30px;
+    font-size:22px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+#yes{
+    background:white;
+    color:#ff4d88;
+    font-weight:bold;
+}
+
+#yes:hover{
+    transform:scale(1.08);
+}
+
+#no{
+    position:absolute;
+    background:#ff4d88;
+    color:white;
+}
+
+#message{
+    margin-top:25px;
+    color:white;
+    font-size:22px;
+    font-weight:bold;
+    min-height:30px;
+}
+
+#finalScreen{
+    display:none;
+    text-align:center;
+    color:white;
+    z-index:2;
+}
+
+#finalScreen h1{
+    font-size:3.5rem;
+    margin-bottom:20px;
+}
+
+#finalScreen h2{
+    margin:15px;
+}
+
+#countdown{
+    margin-top:25px;
+    font-size:1.4rem;
+    font-weight:bold;
+}
+
+.heart{
+    position:absolute;
+    font-size:25px;
+    pointer-events:none;
+    animation:floatUp linear forwards;
+}
+
+@keyframes floatUp{
+
+    from{
+        transform:translateY(0);
+        opacity:1;
+    }
+
+    to{
+        transform:translateY(-110vh);
+        opacity:0;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container" id="main">
+
+    <h1>Hola Jade ❤️</h1>
+
+    <p>
+        Tengo una pregunta muy importante...
+    </p>
+
+    <h1 style="font-size:2.5rem;">
+        ¿Quieres salir conmigo?
+    </h1>
+
+    <br>
+
+    <button id="yes">
+        Sí ❤️
+    </button>
+
+    <button id="no">
+        No 😢
+    </button>
+
+    <div id="message"></div>
+
+</div>
+
+<div id="finalScreen">
+
+    <h1>❤️ ¡Perfecto! ❤️</h1>
+
+    <h2>
+        Jade, nuestra cita está confirmada ✨
+    </h2>
+
+    <h2>
+        📅 Sábado 20 de junio de 2026
+    </h2>
+
+    <h2>
+        📍 Ubicación: Sorpresa 🤫
+    </h2>
+
+    <h2>
+        Prepárate para una gran tarde 😊
+    </h2>
+
+    <div id="countdown"></div>
+
+</div>
+
+<script>
+
+const noBtn = document.getElementById("no");
+const yesBtn = document.getElementById("yes");
+const message = document.getElementById("message");
+
+let escala = 1;
+
+const frases = [
+    "¿Segura? 🥺",
+    "Piénsalo otra vez 😭",
+    "Prometo que será divertido ✨",
+    "Vamos, di que sí 😌",
+    "Te vas a perder una sorpresa 🤫",
+    "Ya casi te convenzo 😎",
+    "No puedes escapar jajaja ❤️"
+];
+
+let intento = 0;
+
+function moverBoton(){
+
+    const ancho = window.innerWidth - 150;
+    const alto = window.innerHeight - 80;
+
+    const x = Math.random() * ancho;
+    const y = Math.random() * alto;
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+
+    message.innerHTML =
+        frases[Math.min(intento, frases.length - 1)];
+
+    intento++;
+
+    escala += 0.15;
+
+    yesBtn.style.transform =
+        `scale(${escala})`;
+}
+
+noBtn.addEventListener("mouseover", moverBoton);
+noBtn.addEventListener("click", moverBoton);
+
+yesBtn.addEventListener("click", () => {
+
+    document.getElementById("main").style.display = "none";
+    document.getElementById("finalScreen").style.display = "block";
+
+    iniciarCuentaRegresiva();
+
+    for(let i=0; i<200; i++){
+
+        setTimeout(() => {
+
+            const heart =
+                document.createElement("div");
+
+            heart.className = "heart";
+            heart.innerHTML = "❤️";
+
+            heart.style.left =
+                Math.random() * 100 + "vw";
+
+            heart.style.top =
+                "100vh";
+
+            heart.style.animationDuration =
+                (Math.random()*4 + 3) + "s";
+
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            },7000);
+
+        },i*40);
+    }
+});
+
+function iniciarCuentaRegresiva(){
+
+    const fechaCita =
+        new Date("2026-06-20T18:00:00");
+
+    const countdown =
+        document.getElementById("countdown");
+
+    setInterval(() => {
+
+        const ahora = new Date();
+
+        const diferencia =
+            fechaCita - ahora;
+
+        if(diferencia <= 0){
+
+            countdown.innerHTML =
+                "🎉 ¡Hoy es el gran día! 🎉";
+
+            return;
+        }
+
+        const dias =
+            Math.floor(
+                diferencia /
+                (1000*60*60*24)
+            );
+
+        const horas =
+            Math.floor(
+                (diferencia %
+                (1000*60*60*24))
+                /
+                (1000*60*60)
+            );
+
+        const minutos =
+            Math.floor(
+                (diferencia %
+                (1000*60*60))
+                /
+                (1000*60)
+            );
+
+        const segundos =
+            Math.floor(
+                (diferencia %
+                (1000*60))
+                /
+                1000
+            );
+
+        countdown.innerHTML =
+            `⏳ Faltan ${dias} días, ${horas} horas, ${minutos} minutos y ${segundos} segundos`;
+
+    },1000);
+}
+
+setInterval(() => {
+
+    const heart =
+        document.createElement("div");
+
+    heart.className = "heart";
+    heart.innerHTML = "💖";
+
+    heart.style.left =
+        Math.random()*100 + "vw";
+
+    heart.style.top = "100vh";
+
+    heart.style.animationDuration =
+        (Math.random()*4 + 5) + "s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+        heart.remove();
+    },9000);
+
+},500);
+
+</script>
+
+</body>
+</html>
