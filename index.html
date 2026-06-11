@@ -93,6 +93,7 @@ button{
     color:white;
     z-index:2;
 }
+    
 
 #finalScreen h1{
     font-size:3.5rem;
@@ -177,7 +178,7 @@ button{
     </h2>
 
     <h2>
-        Ubicación: Sorpresa 🤫
+        Ubicación: Sorpresaaa
     </h2>
 
     <h2>
@@ -185,6 +186,21 @@ button{
     </h2>
 
     <div id="countdown"></div>
+
+    <h2 style="margin-top:40px;">
+        No olvides adjuntar tus evidencias jajaja
+    </h2>
+
+    <button id="shareBtn"
+    style="
+    background:white;
+    color:#ff69b4;
+    font-weight:bold;
+    margin-top:15px;
+    ">
+        Compartir evidencias
+    </button>
+
 
 </div>
 
@@ -374,8 +390,54 @@ function iniciarCorazones(){
 
     },250);
 }
+    document.addEventListener("click", async (e) => {
+
+    if(e.target.id !== "shareBtn") return;
+
+    try {
+
+        const canvas = await html2canvas(
+            document.getElementById("finalScreen")
+        );
+
+        canvas.toBlob(async (blob) => {
+
+            const file = new File(
+                [blob],
+                "evidencia-jade.png",
+                { type: "image/png" }
+            );
+
+            if(
+                navigator.canShare &&
+                navigator.canShare({ files:[file] })
+            ){
+
+                await navigator.share({
+                    title: "Evidencia",
+                    text: "No olvides adjuntar tus evidenciaaaas",
+                    files: [file]
+                });
+
+            } else {
+
+                alert(
+                    "Tu navegador no permite compartir imágenes directamente."
+                );
+
+            }
+
+        });
+
+    } catch(error) {
+
+        console.error(error);
+
+    }
+
+});
 
 </script>
-
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </body>
 </html>
