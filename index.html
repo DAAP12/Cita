@@ -396,38 +396,168 @@ function iniciarCorazones(){
 
     try {
 
-        const canvas = await html2canvas(
-            document.getElementById("finalScreen")
-        );
+document.addEventListener("click", async (e) => {
 
-        canvas.toBlob(async (blob) => {
+    if(e.target.id !== "shareBtn") return;
 
-            const file = new File(
-                [blob],
-                "confirmacion.png",
-                { type: "image/png" }
+    try {
+
+        const evidenciaCanvas =
+            document.createElement("canvas");
+
+        evidenciaCanvas.width = 1080;
+        evidenciaCanvas.height = 1350;
+
+        const ctx =
+            evidenciaCanvas.getContext("2d");
+
+        const gradiente =
+            ctx.createLinearGradient(
+                0,0,
+                1080,1350
             );
 
+        gradiente.addColorStop(0,"#ffffff");
+        gradiente.addColorStop(1,"#ffe4f1");
+
+        ctx.fillStyle = gradiente;
+        ctx.fillRect(
+            0,
+            0,
+            evidenciaCanvas.width,
+            evidenciaCanvas.height
+        );
+
+        ctx.fillStyle = "#ff69b4";
+        ctx.textAlign = "center";
+
+        ctx.font = "bold 80px Arial";
+
+        ctx.fillText(
+            "Sí quiero salir contigo ❤️",
+            540,
+            250
+        );
+
+        ctx.font = "50px Arial";
+
+        ctx.fillText(
+            "Jade ha aceptado la invitación",
+            540,
+            380
+        );
+
+        const textoCuenta =
+            document.getElementById(
+                "countdown"
+            ).innerText;
+
+        ctx.font = "bold 55px Arial";
+
+        const lineas = [];
+
+        let palabras =
+            textoCuenta.split(" ");
+
+        let linea = "";
+
+        for(let palabra of palabras){
+
+            let prueba =
+                linea + palabra + " ";
+
             if(
-                navigator.canShare &&
-                navigator.canShare({ files:[file] })
+                ctx.measureText(prueba)
+                .width > 900
             ){
 
-                await navigator.share({
-                    title: "Evidencia",
-                    text: "No olvides adjuntar tus evidenciaaaas",
-                    files: [file]
-                });
+                lineas.push(linea);
+                linea =
+                    palabra + " ";
 
-            } else {
+            }else{
 
-                alert(
-                    "Tu navegador no permite compartir imágenes directamente."
-                );
+                linea = prueba;
 
             }
 
+        }
+
+        lineas.push(linea);
+
+        let y = 650;
+
+        lineas.forEach(l => {
+
+            ctx.fillText(
+                l,
+                540,
+                y
+            );
+
+            y += 80;
+
         });
+
+        ctx.font = "45px Arial";
+
+        ctx.fillText(
+            "📅 Sábado 20",
+            540,
+            950
+        );
+
+        ctx.fillText(
+            "📍 Ubicación: Sorpresaaa",
+            540,
+            1030
+        );
+
+        ctx.fillText(
+            "✨ Evidencia oficial ✨",
+            540,
+            1180
+        );
+
+        evidenciaCanvas.toBlob(
+            async (blob) => {
+
+                const file =
+                    new File(
+                        [blob],
+                        "confirmacion.png",
+                        {
+                            type:
+                            "image/png"
+                        }
+                    );
+
+                if(
+                    navigator.canShare &&
+                    navigator.canShare({
+                        files:[file]
+                    })
+                ){
+
+                    await navigator.share({
+                        title:
+                        "Confirmación",
+                        text:
+                        "Sí quiero salir contigo ❤️",
+                        files:[file]
+                    });
+
+                } else {
+
+                    alert(
+                    "Tu navegador no permite compartir imágenes."
+                    );
+
+                }
+
+            },
+            "image/png"
+        );
 
     } catch(error) {
 
